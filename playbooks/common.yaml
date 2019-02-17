@@ -32,3 +32,14 @@
      service:
        name: ntpd
        state: restarted
+
+  tasks:
+  - name: manage resolv.conf
+    template:
+      src: /ansble/templates/resolv.conf.j2
+      dest: /etc/resolv.conf
+   - name: stop  NetworkManager
+   service:
+     name: NetworkManager
+     state: stopped
+     enabled: no
