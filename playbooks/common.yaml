@@ -1,13 +1,13 @@
 ---
 - name: install initial packages on all boxes
- hosts: all
- remote_user: ansible
- become: yes
+  hosts: all
+  remote_user: ansible
+  become: yes
 
  tasks:
  - name: install all initial packages
    yum:
-     name: {{item}}
+     name: "{{ item }}"
      state: latest
      with_items:
      - man
@@ -38,8 +38,8 @@
     template:
       src: /ansble/templates/resolv.conf.j2
       dest: /etc/resolv.conf
-   - name: stop  NetworkManager
+   - name: remove  NetworkManager
    service:
      name: NetworkManager
-     state: stopped
+     state: absent
      enabled: no
