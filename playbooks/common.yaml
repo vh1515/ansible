@@ -4,42 +4,41 @@
   remote_user: ansible
   become: yes
 
- tasks:
- - name: install all initial packages
-   yum:
-     name: "{{ item }}"
-     state: latest
-     with_items:
-     - man
-     - man-pages
-     - mlocate
-     - bind-utils
- - name: install ntp packages
-   yum:
-     name: ntp
-     state: latest
- - name: configure ntp
-   template:
-     src: /ansible/templates/ntp.conf.j2
-     dest: /etc/ntp.conf
-   notify: restart ntpd
- - name: start ntp
-   service:
-     name: ntpd
-     state: started
- handlers:
-   - name: restart ntpd
-     service:
-       name: ntpd
-       state: restarted
+  tasks:
+  - name: install all initial packages
+    yum:
+      name: "{{ item }}"
+      state: latest
+      with_items:
+       - man
+       - man-pages
+       - mlocate
+       - bind-utils
+  - name: install ntp packages
+    yum:
+      name: ntp
+      state: latest
+  - name: configure ntp
+    template:
+      src: /ansible/templates/ntp.conf.j2
+      dest: /etc/ntp.conf
+    notify: restart ntpd
+  - name: start ntp
+    service:
+      name: ntpd
+      state: started
+  handlers:
+    - name: restart ntpd
+      service:
+        name: ntpd
+        state: restarted
 
   tasks:
   - name: manage resolv.conf
     template:
       src: /ansble/templates/resolv.conf.j2
       dest: /etc/resolv.conf
-   - name: remove  NetworkManager
-   service:
-     name: NetworkManager
-     state: absent
-     enabled: no
+  - name: remove  NetworkManager
+    yum:
+      name: NetworkManager
+      state: absent
